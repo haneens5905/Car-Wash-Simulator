@@ -1,106 +1,112 @@
-# 🚗 Car Wash Simulation — CS241 Assignment 2
+# Car Wash Simulation
 
-> **Cairo University — Faculty of Computers and Artificial Intelligence**
-> **CS241: Operating Systems – 1**
-
-![Build](https://github.com/YOUR_USERNAME/CarWashSimulator/actions/workflows/build.yml/badge.svg)
-![Java](https://img.shields.io/badge/Java-17%2B-orange?logo=java)
-![License](https://img.shields.io/badge/license-MIT-blue)
-
----
-
-## 📖 Overview
+<p align="left">
+  <img src="https://img.shields.io/badge/Java-17%2B-ED8B00?style=flat-square&logo=openjdk&logoColor=white" alt="Java" />
+  <img src="https://img.shields.io/badge/Multithreading-Concurrent%20Threads-2E86AB?style=flat-square" alt="Multithreading" />
+  <img src="https://img.shields.io/badge/Semaphores-P%28%29%20%2F%20V%28%29-6C4FBB?style=flat-square" alt="Semaphores" />
+  <img src="https://img.shields.io/badge/Bounded%20Buffer-Producer--Consumer-1287B1?style=flat-square" alt="Bounded Buffer" />
+  <img src="https://img.shields.io/badge/Swing-GUI-2E8B57?style=flat-square" alt="Swing GUI" />
+  <img src="https://img.shields.io/badge/Mutex-Race%20Condition%20Safe-E07B39?style=flat-square" alt="Mutex" />
+</p>
 
 A multithreaded **Car Wash & Gas Station Simulator** built in Java, implementing the classic **Producer-Consumer Problem** using the **Bounded Buffer** pattern.
 
-The simulation models a service station with:
-- A **fixed-size waiting area** (bounded buffer / queue)
-- A configurable number of **service bays (pumps)** running concurrently
-- Full **synchronization** using custom semaphores and a mutex to prevent race conditions
-- A **Swing-based GUI** showing live pump status, the waiting queue, and an activity log
+The project covers custom semaphore implementation, mutex-based queue synchronization, concurrent thread management, and a live Swing GUI dashboard.
 
 ---
 
-## 🧠 Concepts Demonstrated
+## Project Overview
 
-| Concept | Implementation |
-|---|---|
-| Producer-Consumer Problem | `Car` (producer) → Queue → `Pump` (consumer) |
-| Bounded Buffer | `LinkedList` queue with fixed capacity |
-| Semaphores | Custom `Semaphore` class with `P()` / `V()` |
-| Mutex | `synchronized (mutex)` block for queue access |
-| Multithreading | Each car and each pump runs as its own `Thread` |
-| GUI | Java Swing (`JFrame`, `JLabel`, `JTextArea`) |
+This project demonstrates practical use of OS synchronization primitives to simulate a real-world service station. Key concepts covered include:
+
+- **Producer-Consumer Pattern** — `Car` threads produce into a bounded queue; `Pump` threads consume from it
+- **Custom Semaphore** — Implemented from scratch using `wait()` / `notify()` with `P()` and `V()` methods
+- **Mutex (synchronized block)** — Prevents race conditions on shared queue access
+- **Bounded Buffer** — Fixed-size waiting area enforced by `empty` and `full` semaphores
+- **Thread Pool** — A fixed number of pump threads run concurrently as background consumers
+- **Swing GUI** — Live color-coded dashboard showing pump status, waiting queue, and activity log
 
 ---
 
-## 🏗️ Project Structure
+## Repository Structure
 
 ```
 CarWashSimulator/
+│
+├── README.md
+│
 ├── src/
-│   └── ServiceStation.java      # All classes in one file (as per submission rules)
-├── out/                         # Compiled .class files (auto-generated, git-ignored)
-├── .github/
-│   └── workflows/
-│       └── build.yml            # GitHub Actions: auto-compile on push
-├── .gitignore
-└── README.md
+│   └── ServiceStation.java          # All classes in one file (submission format)
+│
+├── out/                             # Compiled .class files (git-ignored)
+│
+└── .github/
+    └── workflows/
+        └── build.yml                # GitHub Actions — auto-compile on every push
 ```
 
 ---
 
-## 🔧 Classes
+## Class Design
 
-### `ServiceStation` *(Main)*
-- Reads user input: waiting area size, number of pumps, car arrival order
-- Initializes shared resources: queue, semaphores (`empty`, `full`, `pumps`), mutex
-- Spawns `Pump` consumer threads and `Car` producer threads
-- Hosts helper methods: `addToQueue()`, `removeFromQueue()`, `incrementProcessedCars()`
+**Main Class:** `ServiceStation` — shared resources, thread orchestration, queue helpers
 
-### `Semaphore`
-- Custom implementation (as required by the lab spec)
-- `P()` — wait/decrement; blocks the thread if value < 0
-- `V()` — signal/increment; wakes up a waiting thread if value ≤ 0
-
-### `Car` *(Producer)*
-- Extends `Thread`
-- Calls `empty.P()` → waits if queue is full
-- Adds itself to the shared queue
-- Calls `full.V()` → signals a pump that a car is ready
-
-### `Pump` *(Consumer)*
-- Extends `Thread`
-- Calls `full.P()` → waits if no cars in queue
-- Removes a car from the queue
-- Acquires a service bay, simulates service (random 3–5s), releases the bay
-- Calls `empty.V()` → signals that a queue slot is free
-
-### `CarWashGUI`
-- Java Swing GUI dashboard
-- **Service Bays panel** (top): green = Free, orange = Occupied, yellow = Servicing
-- **Waiting Area panel** (center): shows which cars are currently queued
-- **Activity Log** (bottom): scrollable real-time log of all events
+| Class | Role | Pattern |
+|---|---|---|
+| `ServiceStation` | Initializes resources, spawns threads | Main / Coordinator |
+| `Semaphore` | Custom counting semaphore | `P()` / `V()` using `wait()` / `notify()` |
+| `Car` | Arrives, waits for queue slot, joins queue | Producer Thread |
+| `Pump` | Takes car from queue, services, releases bay | Consumer Thread |
+| `CarWashGUI` | Live visual dashboard | Java Swing (`JFrame`) |
 
 ---
 
-## ▶️ How to Run
+## Synchronization Design
 
-### Prerequisites
-- Java 17+ installed ([Download JDK](https://adoptium.net/))
+**Semaphores used:**
+
+| Semaphore | Initial Value | Purpose |
+|---|---|---|
+| `empty` | `waitingCapacity` | Counts available slots in the queue |
+| `full` | `0` | Counts cars currently waiting in the queue |
+| `pumps` | `numOfPumps` | Counts available service bays |
+
+**Mutex:** A shared `Object mutex` guards all queue reads and writes via `synchronized` blocks.
+
+---
+
+## GUI Color Guide
+
+| Color | Pump Status | Queue Slot Status |
+|---|---|---|
+| 🟢 Green | Bay is **Free** | — |
+| 🟠 Orange | Car **Occupied** the bay | Slot has a **waiting car** |
+| 🟡 Yellow | Car is actively **Servicing** | — |
+| ⬜ Grey | — | Slot is **Empty** |
+| 🔵 Blue | — | Slot is **occupied** by a waiting car |
+
+---
+
+## How to Run
+
+### Requirements
+- Java 17+ ([Download JDK](https://adoptium.net/))
 
 ### Compile
+
 ```bash
 mkdir -p out
 javac -d out src/ServiceStation.java
 ```
 
 ### Run
+
 ```bash
 java -cp out ServiceStation
 ```
 
 ### Sample Input
+
 ```
 Enter garage waiting area size (1-10): 5
 Enter number of pumps/service bays (at least 1): 3
@@ -109,7 +115,7 @@ Enter cars arriving (order, comma-separated): C1,C2,C3,C4,C5
 
 ---
 
-## 📋 Sample Output
+## Sample Output
 
 ```
 C1 arrived
@@ -147,19 +153,27 @@ All cars processed; simulation ends
 
 ---
 
-## 🖥️ GUI Preview
+## Key Findings: Synchronization Behavior
 
-The GUI shows three live panels:
+The order of semaphore operations is critical to correctness:
 
-- 🟢 **Green** pump label → Bay is **free**
-- 🟠 **Orange** pump label → Car just **arrived/occupied** the bay
-- 🟡 **Yellow** pump label → Car is actively being **serviced**
-- 🔵 **Blue** queue slot → Slot is **occupied** by a waiting car
-- ⬜ **Grey** queue slot → Slot is **empty**
+- **Car (Producer):** must call `empty.P()` before acquiring the mutex — otherwise a full queue causes deadlock
+- **Pump (Consumer):** must call `full.P()` before acquiring the mutex — otherwise an empty queue causes deadlock
+- **Pump semaphore** is acquired inside the pump thread after dequeuing — this models the physical service bay constraint independently from the buffer semaphores
 
 ---
 
-## 👥 Team
+## Technologies Used
+
+| Technology | Purpose |
+|---|---|
+| Java 17+ | Core language and threading (`Thread`, `synchronized`) |
+| Java Swing | GUI dashboard (`JFrame`, `JLabel`, `JTextArea`) |
+| GitHub Actions | Auto-compile on every push via `build.yml` |
+
+---
+
+## Team
 
 | Name | ID |
 |---|---|
@@ -169,9 +183,3 @@ The GUI shows three live panels:
 
 > Cairo University — Faculty of Computers and Artificial Intelligence
 > CS241: Operating Systems – 1, 2024
-
----
-
-## 📜 License
-
-This project is submitted for academic purposes. Feel free to use it as a reference for learning OS synchronization concepts.
