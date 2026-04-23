@@ -1,10 +1,3 @@
-/*  Assignment 2 - Car Wash Simulation
-    Haneen Hisham   20236023
-    Shaza Moatasem  20236050
-    Ziad Tarek      20236043
-*/
-
-
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Scanner;
