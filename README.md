@@ -31,12 +31,17 @@ This project demonstrates practical use of OS synchronization primitives to simu
 ## Repository Structure
 
 ```
-CarWashSimulator/
+Car-Wash-Simulator/
 │
 ├── README.md
 │
 ├── src/
 │   └── ServiceStation.java          # All classes in one file (submission format)
+│
+├── screenshots/                     # GUI screenshots
+│   ├── servicing.jpeg
+│   ├── mid_simulation.jpeg
+│   └── simulation_end.jpeg
 │
 ├── out/                             # Compiled .class files (git-ignored)
 │
@@ -84,6 +89,22 @@ CarWashSimulator/
 | 🟡 Yellow | Car is actively **Servicing** | — |
 | ⬜ Grey | — | Slot is **Empty** |
 | 🔵 Blue | — | Slot is **occupied** by a waiting car |
+
+---
+
+## GUI Screenshots
+
+**All pumps active — cars waiting in queue**
+
+![Servicing](screenshots/servicing.jpeg)
+
+**Mid-simulation — new batch of cars waiting**
+
+![Mid Simulation](screenshots/mid_simulation.jpeg)
+
+**Simulation complete — all bays free**
+
+![Simulation End](screenshots/simulation_end.jpeg)
 
 ---
 
@@ -183,19 +204,3 @@ The order of semaphore operations is critical to correctness:
 
 > Cairo University — Faculty of Computers and Artificial Intelligence
 > CS241: Operating Systems – 1, 2024
-
----
-
-## GUI Screenshots
-
-**All pumps active — cars waiting in queue**
-
-![Servicing](screenshots/servicing.jpeg)
-
-**Mid-simulation — new batch of cars waiting**
-
-![Mid Simulation](screenshots/mid_simulation.jpeg)
-
-**Simulation complete — all bays free**
-
-![Simulation End](screenshots/simulation_end.jpeg)
