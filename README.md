@@ -1,13 +1,11 @@
 # Car Wash Simulation
 
-<p align="left">
-  <img src="https://img.shields.io/badge/Java-17%2B-ED8B00?style=flat-square&logo=openjdk&logoColor=white" alt="Java" />
-  <img src="https://img.shields.io/badge/Multithreading-Concurrent%20Threads-2E86AB?style=flat-square" alt="Multithreading" />
-  <img src="https://img.shields.io/badge/Semaphores-P%28%29%20%2F%20V%28%29-6C4FBB?style=flat-square" alt="Semaphores" />
-  <img src="https://img.shields.io/badge/Bounded%20Buffer-Producer--Consumer-1287B1?style=flat-square" alt="Bounded Buffer" />
-  <img src="https://img.shields.io/badge/Swing-GUI-2E8B57?style=flat-square" alt="Swing GUI" />
-  <img src="https://img.shields.io/badge/Mutex-Race%20Condition%20Safe-E07B39?style=flat-square" alt="Mutex" />
-</p>
+![Java](https://img.shields.io/badge/Java-17%2B-ED8B00?style=flat&logo=openjdk&logoColor=white)
+![Multithreading](https://img.shields.io/badge/Multithreading-Concurrent%20Threads-2E86AB?style=flat)
+![Semaphores](https://img.shields.io/badge/Semaphores-P%28%29%20%2F%20V%28%29-6C4FBB?style=flat)
+![Bounded Buffer](https://img.shields.io/badge/Bounded%20Buffer-Producer--Consumer-1287B1?style=flat)
+![Swing GUI](https://img.shields.io/badge/Swing-GUI-2E8B57?style=flat)
+![Mutex](https://img.shields.io/badge/Mutex-Race%20Condition%20Safe-E07B39?style=flat)
 
 A multithreaded **Car Wash & Gas Station Simulator** built in Java, implementing the classic **Producer-Consumer Problem** using the **Bounded Buffer** pattern.
 
