@@ -172,14 +172,3 @@ The order of semaphore operations is critical to correctness:
 | GitHub Actions | Auto-compile on every push via `build.yml` |
 
 ---
-
-## Team
-
-| Name | ID |
-|---|---|
-| Haneen Hisham | 20236023 |
-| Shaza Moatasem | 20236050 |
-| Ziad Tarek | 20236043 |
-
-> Cairo University — Faculty of Computers and Artificial Intelligence
-> CS241: Operating Systems – 1, 2024
